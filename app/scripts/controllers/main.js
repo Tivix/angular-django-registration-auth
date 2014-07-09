@@ -47,7 +47,7 @@ angular.module('angularDjangoRegistrationAuthApp')
     }
     
     $scope.updateProfile = function(){
-      djangoAuth.updateProfile(prompt("First Name"), prompt("Last Name"), prompt("Email"))
+      djangoAuth.updateProfile({'first_name': prompt("First Name"), 'last_name': prompt("Last Name"), 'email': prompt("Email")})
       .then(handleSuccess,handleError);
     }
     

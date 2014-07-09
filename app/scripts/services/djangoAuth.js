@@ -63,15 +63,17 @@ angular.module('angularDjangoRegistrationAuthApp')
             }));
             return deferred.promise;
         },
-        'register': function(username,password,email){
+        'register': function(username,password,email,more){
+            var data = {
+                'username':username,
+                'password':password,
+                'email':email
+            }
+            data = angular.extend(data,more);
             return this.request({
                 'method': "POST",
                 'url': "/register/",
-                'data':{
-                    'username':username,
-                    'password':password,
-                    'email':email
-                }
+                'data' :data
             });
         },
         'login': function(username,password){
@@ -124,16 +126,12 @@ angular.module('angularDjangoRegistrationAuthApp')
                 'url': "/user/"
             }); 
         },
-        'updateProfile': function(first_name,last_name,email){
+        'updateProfile': function(data){
             return this.request({
                 'method': "POST",
                 'url': "/user/",
                 'data':{
-                    'user':{
-                        'first_name':first_name,
-                        'last_name':last_name,
-                        'email':email
-                    }
+                    'user':data
                 }
             }); 
         },

@@ -11,7 +11,7 @@ angular.module('angularDjangoRegistrationAuthApp')
       $scope.errors = [];
       Validate.form_validation(formData,$scope.errors);
       if(!formData.$invalid){
-        djangoAuth.updateProfile($scope.model.first_name, $scope.model.last_name, $scope.model.email)
+        djangoAuth.updateProfile($scope.model)
         .then(function(data){
         	// success case
         	$scope.complete = true;
