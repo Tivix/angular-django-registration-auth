@@ -40,3 +40,5 @@ Todo
 Add ability to extend data that's passed with API calls.
 
 Add a more convenient way to retrieve authentication status from API.
+
+Add support for JWT (JSON web tokens)
