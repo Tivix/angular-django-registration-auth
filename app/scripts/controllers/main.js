@@ -6,7 +6,6 @@ angular.module('angularDjangoRegistrationAuthApp')
     $scope.login = function(){
       djangoAuth.login(prompt('Username'),prompt('password'))
       .then(function(data){
-        $scope.setAuth(true);
         handleSuccess(data);
       },handleError);
     }
@@ -14,7 +13,6 @@ angular.module('angularDjangoRegistrationAuthApp')
     $scope.logout = function(){
       djangoAuth.logout()
       .then(handleSuccess,handleError);
-      $scope.setAuth(false);
     }
     
     $scope.resetPassword = function(){

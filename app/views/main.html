@@ -1,12 +1,17 @@
 <h4>Routes</h4>
-    <a ng-hide="authenticated" href="#/login" class="btn btn-primary">Login</a>
-    <a ng-show="authenticated" href="#/logout" class="btn btn-primary">Logout</a>
-    <a ng-hide="authenticated" href="#/passwordReset" class="btn btn-primary">Send Password Reset</a>
-    <a ng-hide="authenticated" ng-click="goConfirmReset()" class="btn btn-primary">Confirm Password Reset</a>
-    <a ng-hide="authenticated" ng-href="#/register" class="btn btn-primary">Register</a>
-    <a ng-click="goVerify()" class="btn btn-primary">Verify Email</a>
-    <a ng-show="authenticated" href="#/passwordChange" class="btn btn-primary">Change Password</a>
-    <a ng-show="authenticated" href="#/userProfile" class="btn btn-primary">Profile</a>
+    <p>
+        <a ng-hide="authenticated" href="#/login" class="btn btn-primary">Login</a>
+        <a ng-hide="authenticated" href="#/passwordReset" class="btn btn-primary">Send Password Reset</a>
+        <a ng-hide="authenticated" ng-click="goConfirmReset()" class="btn btn-primary">Confirm Password Reset</a>
+    </p>
+    <p>
+        <a ng-show="authenticated" href="#/logout" class="btn btn-primary">Logout</a>
+        <a ng-hide="authenticated" ng-href="#/register" class="btn btn-primary">Register</a>
+        <a ng-click="goVerify()" class="btn btn-primary">Verify Email</a>
+        <a ng-show="authenticated" href="#/passwordChange" class="btn btn-primary">Change Password</a>
+        <a ng-show="authenticated" href="#/userProfile" class="btn btn-primary">Profile</a>
+        <a href="#/authRequired" class="btn btn-primary">Restricted Page</a>
+    </p>
 <hr/>
 <h4>Kitchen Sink Demo</h4>
 <div style="margin-bottom:25px;">
