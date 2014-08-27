@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('angularDjangoRegistrationAuthApp')
-  .service('djangoAuth', function djangoAuth($q, $http, $cookies) {
+  .service('djangoAuth', function djangoAuth($q, $http, $cookies, $rootScope) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var service = {
         /* START CUSTOMIZATION HERE */
@@ -13,6 +13,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         'use_session': true,
         /* END OF CUSTOMIZATION */
         'authenticated': null,
+        'authPromise': null,
         'request': function(args) {
             // Let's retrieve the token from the cookie, if available
             if($cookies.token){
@@ -88,15 +89,20 @@ angular.module('angularDjangoRegistrationAuthApp')
                     $http.defaults.headers.common.Authorization = 'Token ' + data.key;
                     $cookies.token = data.key;
                 }
+                djangoAuth.authenticated = true;
+                $rootScope.$broadcast("djangoAuth.logged_in", data);
             });
         },
         'logout': function(){
+            var djangoAuth = this;
             return this.request({
                 'method': "GET",
                 'url': "/logout/"
             }).then(function(data){
                 delete $http.defaults.headers.common.Authorization;
                 delete $cookies.token;
+                djangoAuth.authenticated = false;
+                $rootScope.$broadcast("djangoAuth.logged_out");
             });
         },
         'changePassword': function(password1,password2){
@@ -153,27 +159,48 @@ angular.module('angularDjangoRegistrationAuthApp')
                 }
             });
         },
-        'initialize': function(url, sessions, model){
+        'authenticationStatus': function(restrict, force){
+            // Set restrict to true to reject the promise if not logged in
+            // Set to false or omit to resolve when status is known
+            // Set force to true to ignore stored value and query API
+            restrict = restrict || false;
+            force = force || false;
+            if(this.authPromise == null || force){
+                this.authPromise = this.request({
+                    'method': "GET",
+                    'url': "/user/"
+                })
+            }
+            var da = this;
+            var getAuthStatus = $q.defer();
+            if(this.authenticated != null && !force){
+                // We have a stored value which means we can pass it back right away.
+                if(this.authenticated == false && restrict){
+                    getAuthStatus.reject("User is not logged in.");
+                }else{
+                    getAuthStatus.resolve();
+                }
+            }else{
+                // There isn't a stored value, or we're forcing a request back to
+                // the API to get the authentication status.
+                this.authPromise.then(function(){
+                    da.authenticated = true;
+                    getAuthStatus.resolve();
+                },function(){
+                    da.authenticated = false;
+                    if(restrict){
+                        getAuthStatus.reject("User is not logged in.");
+                    }else{
+                        getAuthStatus.resolve();
+                    }
+                });
+            }
+            return getAuthStatus.promise;
+        },
+        'initialize': function(url, sessions){
             this.API_URL = url;
             this.use_session = sessions;
-            if(model){
-                model.authenticated = null;
-                if(this.authenticated == null){
-                    var djangoAuth = this;
-                    this.profile().then(function(){
-                        djangoAuth.authenticated = true;
-                        model.authenticated = true;
-                    },function(){
-                        djangoAuth.authenticated = false;
-                        model.authenticated = false;
-                    });
-                }else{
-                    model.authenticated = this.authenticated;
-                }
-                model.setAuth = function(auth){
-                    model.authenticated = auth;
-                }
-            }
+            return this.authenticationStatus();
         }
 
     }
