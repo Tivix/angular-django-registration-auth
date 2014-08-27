@@ -65,4 +65,13 @@ angular.module('angularDjangoRegistrationAuthApp')
     var handleError = function(data){
       $scope.response = data;
     }
+
+    $scope.show_login = true;
+    $scope.$on("djangoAuth.logged_in", function(data){
+      $scope.show_login = false;
+    });
+    $scope.$on("djangoAuth.logged_out", function(data){
+      $scope.show_login = true;
+    });
+
   });

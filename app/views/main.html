@@ -33,7 +33,8 @@
 
 <hr/>
 <h4>ngInclude Demo - Login</h4>
-<div ng-include="'views/login.html'"></div>
+<div ng-if="show_login" ng-include="'views/login.html'"></div>
+<div ng-if="!show_login" class="alert alert-info">You have logged in.</div>
 
 
 <div class="footer">

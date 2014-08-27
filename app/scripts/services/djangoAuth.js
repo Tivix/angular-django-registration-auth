@@ -90,7 +90,7 @@ angular.module('angularDjangoRegistrationAuthApp')
                     $cookies.token = data.key;
                 }
                 djangoAuth.authenticated = true;
-                $rootScope.$broadcast("djangoAuth.logged_in");
+                $rootScope.$broadcast("djangoAuth.logged_in", data);
             });
         },
         'logout': function(){
@@ -200,7 +200,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         'initialize': function(url, sessions){
             this.API_URL = url;
             this.use_session = sessions;
-            this.authenticationStatus();
+            return this.authenticationStatus();
         }
 
     }
