@@ -96,7 +96,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         'logout': function(){
             var djangoAuth = this;
             return this.request({
-                'method': "GET",
+                'method': "POST",
                 'url': "/logout/"
             }).then(function(data){
                 delete $http.defaults.headers.common.Authorization;
