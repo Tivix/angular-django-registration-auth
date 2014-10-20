@@ -132,7 +132,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         },
         'updateProfile': function(first_name,last_name,email){
             return this.request({
-                'method': "POST",
+                'method': "PUT",
                 'url': "/user/",
                 'data':{
                     'user':{
