@@ -1,22 +1,16 @@
 <div id="login_view" ng-controller="LoginCtrl">
-    <div ng-if="complete == false">
-        <form role="form" ng-submit="login(loginForm)" name="loginForm" ng-if="authenticated == false" novalidate>
-          <div class="form-group">
-            <label for="id_username">Username</label>
-            <input name="username" id="id_username" type="text" ng-model="model.username" placeholder="Username" class="form-control" required />
-          </div>
-          <div class="alert alert-danger" ng-repeat="error in errors.username">{{error}}</div>
-          <div class="form-group">
-            <label for="id_password">Password</label>
-            <input name="password" id="id_password" type="password" ng-model="model.password" placeholder="Password" class="form-control" required />
-          </div>
-          <div class="alert alert-danger" ng-repeat="error in errors.password">{{error}}</div>
-          <div class="alert alert-danger" ng-if="error">{{error}}</div>
-          <button type="submit" ng-hide="authenticated" class="btn btn-primary">Login</button>
-        </form>
-        <div class="alert alert-info" ng-if="authenticated == true">You are already logged in!</div>
+  <form role="form" ng-submit="login(loginForm)" name="loginForm" novalidate>
+    <div class="form-group">
+      <label for="id_username">Username</label>
+      <input name="username" id="id_username" type="text" ng-model="model.username" placeholder="Username" class="form-control" required />
     </div>
-    <div ng-if="complete == true">
-        <div class="alert alert-success">You have logged in.</>
+    <div class="alert alert-danger" ng-repeat="error in errors.username">{{error}}</div>
+    <div class="form-group">
+      <label for="id_password">Password</label>
+      <input name="password" id="id_password" type="password" ng-model="model.password" placeholder="Password" class="form-control" required />
     </div>
+    <div class="alert alert-danger" ng-repeat="error in errors.password">{{error}}</div>
+    <div class="alert alert-danger" ng-if="error">{{error}}</div>
+    <button type="submit" class="btn btn-primary">Login</button>
+  </form>
 </div>
