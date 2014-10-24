@@ -1,6 +1,6 @@
 <div id="userProfile_view" ng-controller="UserprofileCtrl">
     <div ng-if="complete == false">
-        <form role="form" ng-if="authenticated" name="userProfileForm" ng-submit="updateProfile(userProfileForm)" novalidate>
+        <form role="form" ng-if="authenticated" name="userProfileForm" ng-submit="updateProfile(userProfileForm, model)" novalidate>
             <div class="form-group">
                 <label for="id_first_name">First Name</label>
                 <input name="first_name" id="id_first_name" class="form-control" type="text" ng-model="model.first_name" placeholder="First Name" />

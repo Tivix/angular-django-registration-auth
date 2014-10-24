@@ -14,7 +14,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         	$location.path("/");
         },function(data){
         	// error case
-        	$scope.error = data.error;
+        	$scope.errors = data;
         });
       }
     }
