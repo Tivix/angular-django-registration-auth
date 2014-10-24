@@ -5,6 +5,7 @@ angular.module('angularDjangoRegistrationAuthApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
+  'ngMessages',
 ])
   .config(function ($routeProvider) {
     $routeProvider
