@@ -64,15 +64,18 @@ angular.module('angularDjangoRegistrationAuthApp')
             }));
             return deferred.promise;
         },
-        'register': function(username,password,email){
+        'register': function(username,password1,password2,email,more){
+            var data = {
+                'username':username,
+                'password1':password1,
+                'password2':password2,
+                'email':email
+            }
+            data = angular.extend(data,more);
             return this.request({
                 'method': "POST",
-                'url': "/register/",
-                'data':{
-                    'username':username,
-                    'password':password,
-                    'email':email
-                }
+                'url': "/registration/",
+                'data' :data
             });
         },
         'login': function(username,password){
@@ -96,7 +99,7 @@ angular.module('angularDjangoRegistrationAuthApp')
         'logout': function(){
             var djangoAuth = this;
             return this.request({
-                'method': "GET",
+                'method': "POST",
                 'url': "/logout/"
             }).then(function(data){
                 delete $http.defaults.headers.common.Authorization;
@@ -130,30 +133,27 @@ angular.module('angularDjangoRegistrationAuthApp')
                 'url': "/user/"
             }); 
         },
-        'updateProfile': function(first_name,last_name,email){
+        'updateProfile': function(data){
             return this.request({
-                'method': "POST",
+                'method': "PATCH",
                 'url': "/user/",
-                'data':{
-                    'user':{
-                        'first_name':first_name,
-                        'last_name':last_name,
-                        'email':email
-                    }
-                }
+                'data':data
             }); 
         },
         'verify': function(key){
             return this.request({
-                'method': "GET",
-                'url': "/verify-email/"+key+"/"
+                'method': "POST",
+                'url': "/registration/verify-email/",
+                'data': {'key': key} 
             });            
         },
-        'confirmReset': function(code1,code2,password1,password2){
+        'confirmReset': function(uid,token,password1,password2){
             return this.request({
                 'method': "POST",
-                'url': "/password/reset/confirm/"+code1+"/"+code2+"/",
+                'url': "/password/reset/confirm/",
                 'data':{
+                    'uid': uid,
+                    'token': token,
                     'new_password1':password1,
                     'new_password2':password2
                 }

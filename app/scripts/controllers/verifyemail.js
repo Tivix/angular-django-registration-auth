@@ -3,8 +3,8 @@
 angular.module('angularDjangoRegistrationAuthApp')
   .controller('VerifyemailCtrl', function ($scope, $routeParams, djangoAuth) {
     djangoAuth.verify($routeParams["emailVerificationToken"]).then(function(data){
-    	$scope.success = data.success;
+    	$scope.success = true;
     },function(data){
-    	$scope.failure = data.errors;
+    	$scope.failure = false;
     });
   });
