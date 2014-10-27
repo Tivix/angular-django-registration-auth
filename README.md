@@ -38,3 +38,7 @@ Todo
 ----
 
 Add support for JWT (JSON web tokens)
+
+Better support for Bower and Grunt
+
+Pick a better name for the module :\
