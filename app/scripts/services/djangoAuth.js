@@ -108,6 +108,20 @@ angular.module('angularDjangoRegistrationAuthApp')
                 $rootScope.$broadcast("djangoAuth.logged_out");
             });
         },
+        //  Uncomment this method and comment out the other
+        //  if you have OLD_PASSWORD_FIELD_ENABLED = True
+        //  set in your django settings.py
+        // 'changePassword': function(old_password,password1,password2){
+        //     return this.request({
+        //         'method': "POST",
+        //         'url': "/password/change/",
+        //         'data':{
+        //             'old_password':old_password,
+        //             'new_password1':password1,
+        //             'new_password2':password2
+        //         }
+        //     });
+        // },
         'changePassword': function(password1,password2){
             return this.request({
                 'method': "POST",
@@ -131,21 +145,21 @@ angular.module('angularDjangoRegistrationAuthApp')
             return this.request({
                 'method': "GET",
                 'url': "/user/"
-            }); 
+            });
         },
         'updateProfile': function(data){
             return this.request({
                 'method': "PATCH",
                 'url': "/user/",
                 'data':data
-            }); 
+            });
         },
         'verify': function(key){
             return this.request({
                 'method': "POST",
                 'url': "/registration/verify-email/",
-                'data': {'key': key} 
-            });            
+                'data': {'key': key}
+            });
         },
         'confirmReset': function(uid,token,password1,password2){
             return this.request({
