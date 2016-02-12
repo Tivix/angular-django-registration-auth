@@ -8,10 +8,12 @@ describe('djangoAuth service', function () {
   var $httpBackend;
   var $http;
   var $cookies;
+  var apiURL;
 
   // load the service's module
   beforeEach(function loadModules() {
     module('angularDjangoRegistrationAuthApp');
+    module('ngMock');
   });
 
   beforeEach(inject(function(_djangoAuth_, _$rootScope_, _$http_, _$httpBackend_, _$cookies_) {
@@ -20,6 +22,7 @@ describe('djangoAuth service', function () {
     $httpBackend = _$httpBackend_;
     $http = _$http_;
     $cookies = _$cookies_;
+    apiURL = '//127.0.0.1:8000';
     expect(djangoAuth).not.toBeNull();
     expect($rootScope).not.toBeNull();
     expect($httpBackend).not.toBeNull();
@@ -57,4 +60,17 @@ describe('djangoAuth service', function () {
     expect($cookies.token).toBe('TOK123456');
   });
 
+  it('should be able to register new user', function() {
+    djangoAuth.register('newuser@xyz.com', '1234', '1234', 'newuser@xyz.com');
+    $httpBackend.expectPOST(apiURL+'/rest-auth/registration/', {
+      username: 'newuser@xyz.com',
+      password1: '1234',
+      password2: '1234',
+      email: 'newuser@xyz.com'
+    }).respond(201, function() {
+      key: 'TOK123456'
+    }); 
+    $httpBackend.flush();
+    $rootScope.$apply();
+  });
 });

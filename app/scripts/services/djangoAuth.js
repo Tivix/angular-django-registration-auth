@@ -36,10 +36,10 @@ angular.module('angularDjangoRegistrationAuthApp')
                 params: params,
                 data: data
             })
-            .success(angular.bind(this,function(data, status, headers, config) {
+            .success(angular.bind(this,function onRequestSuccess(data, status, headers, config) {
                 deferred.resolve(data, status);
             }))
-            .error(angular.bind(this,function(data, status, headers, config) {
+            .error(angular.bind(this,function onRequestError(data, status, headers, config) {
                 console.log("error syncing with: " + url);
                 // Set request status
                 if(data){
@@ -64,7 +64,17 @@ angular.module('angularDjangoRegistrationAuthApp')
             }));
             return deferred.promise;
         },
-        'register': function(username,password1,password2,email,more){
+        'onLoginSuccess': function onLoginSuccess(data) {
+            var djangoAuth = this;
+            if(!djangoAuth.use_session){
+                $http.defaults.headers.common.Authorization = 'Token ' + data.key;
+                $cookies.token = data.key;
+            }
+            djangoAuth.authenticated = true;
+            $rootScope.$broadcast("djangoAuth.logged_in", data);
+        },
+        'register': function register(username,password1,password2,email,more){
+            var djangoAuth = this;
             var data = {
                 'username':username,
                 'password1':password1,
@@ -75,10 +85,12 @@ angular.module('angularDjangoRegistrationAuthApp')
             return this.request({
                 'method': "POST",
                 'url': "/registration/",
-                'data' :data
+                'data': data
+            }).then(function(data){
+                djangoAuth.onLoginSuccess(data);
             });
         },
-        'login': function(username,password){
+        'login': function login(username,password){
             var djangoAuth = this;
             return this.request({
                 'method': "POST",
@@ -88,15 +100,10 @@ angular.module('angularDjangoRegistrationAuthApp')
                     'password':password
                 }
             }).then(function(data){
-                if(!djangoAuth.use_session){
-                    $http.defaults.headers.common.Authorization = 'Token ' + data.key;
-                    $cookies.token = data.key;
-                }
-                djangoAuth.authenticated = true;
-                $rootScope.$broadcast("djangoAuth.logged_in", data);
+                djangoAuth.onLoginSuccess(data);
             });
         },
-        'logout': function(){
+        'logout': function logout(){
             var djangoAuth = this;
             return this.request({
                 'method': "POST",
@@ -108,7 +115,7 @@ angular.module('angularDjangoRegistrationAuthApp')
                 $rootScope.$broadcast("djangoAuth.logged_out");
             });
         },
-        'changePassword': function(password1,password2){
+        'changePassword': function changePassword(password1,password2){
             return this.request({
                 'method': "POST",
                 'url': "/password/change/",
@@ -118,7 +125,7 @@ angular.module('angularDjangoRegistrationAuthApp')
                 }
             });
         },
-        'resetPassword': function(email){
+        'resetPassword': function resetPassword(email){
             return this.request({
                 'method': "POST",
                 'url': "/password/reset/",
@@ -127,27 +134,27 @@ angular.module('angularDjangoRegistrationAuthApp')
                 }
             });
         },
-        'profile': function(){
+        'profile': function profile(){
             return this.request({
                 'method': "GET",
                 'url': "/user/"
             }); 
         },
-        'updateProfile': function(data){
+        'updateProfile': function updateProfile(data){
             return this.request({
                 'method': "PATCH",
                 'url': "/user/",
                 'data':data
             }); 
         },
-        'verify': function(key){
+        'verify': function verify(key) {
             return this.request({
                 'method': "POST",
                 'url': "/registration/verify-email/",
                 'data': {'key': key} 
             });            
         },
-        'confirmReset': function(uid,token,password1,password2){
+        'confirmReset': function confirmReset(uid,token,password1,password2){
             return this.request({
                 'method': "POST",
                 'url': "/password/reset/confirm/",
@@ -159,7 +166,7 @@ angular.module('angularDjangoRegistrationAuthApp')
                 }
             });
         },
-        'authenticationStatus': function(restrict, force){
+        'authenticationStatus': function authenticationStatus(restrict, force){
             // Set restrict to true to reject the promise if not logged in
             // Set to false or omit to resolve when status is known
             // Set force to true to ignore stored value and query API
@@ -197,7 +204,7 @@ angular.module('angularDjangoRegistrationAuthApp')
             }
             return getAuthStatus.promise;
         },
-        'initialize': function(url, sessions){
+        'initialize': function initialize(url, sessions){
             this.API_URL = url;
             this.use_session = sessions;
             return this.authenticationStatus();
