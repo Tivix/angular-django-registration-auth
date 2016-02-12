@@ -1,7 +1,8 @@
-'use strict';
+(function() {
+    'use strict';
 
-angular.module('angularDjangoRegistrationAuthApp')
-  .service('djangoAuth', function djangoAuth($q, $http, $cookies, $rootScope) {
+    angular.module('angularDjangoRegistrationAuthApp')
+    .service('djangoAuth', function djangoAuth($q, $http, $cookies, $rootScope) {
     // AngularJS will instantiate a singleton by calling "new" on this function
     var service = {
         /* START CUSTOMIZATION HERE */
@@ -23,10 +24,10 @@ angular.module('angularDjangoRegistrationAuthApp')
             params = args.params || {}
             args = args || {};
             var deferred = $q.defer(),
-                url = this.API_URL + args.url,
-                method = args.method || "GET",
-                params = params,
-                data = args.data || {};
+            url = this.API_URL + args.url,
+            method = args.method || "GET",
+            params = params,
+            data = args.data || {};
             // Fire the request, as configured.
             $http({
                 url: url,
@@ -212,4 +213,6 @@ angular.module('angularDjangoRegistrationAuthApp')
 
     }
     return service;
-  });
+});
+
+})();
