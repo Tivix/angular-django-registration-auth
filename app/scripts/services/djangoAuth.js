@@ -12,6 +12,8 @@
         // Set use_session to true to use Django sessions to store security token.
         // Set use_session to false to store the security token locally and transmit it as a custom header.
         'use_session': true,
+        // django-rest-auth settings variable
+        'OLD_PASSWORD_FIELD_ENABLED': true,
         /* END OF CUSTOMIZATION */
         'authenticated': null,
         'authPromise': null,
@@ -116,14 +118,21 @@
                 $rootScope.$broadcast("djangoAuth.logged_out");
             });
         },
-        'changePassword': function changePassword(password1,password2){
+        'changePassword': function changePassword(password1,password2,old_password){
+            var data = {
+                'new_password1': password1,
+                'new_password2': password2
+            };  
+            if (old_password === undefined) {
+                old_password = '';
+            }
+            if (this.OLD_PASSWORD_FIELD_ENABLED === true) {
+                data['old_password'] = old_password;
+            }
             return this.request({
                 'method': "POST",
                 'url': "/password/change/",
-                'data':{
-                    'new_password1':password1,
-                    'new_password2':password2
-                }
+                'data': data
             });
         },
         'resetPassword': function resetPassword(email){

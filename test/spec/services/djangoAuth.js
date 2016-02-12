@@ -73,4 +73,24 @@ describe('djangoAuth service', function () {
     $httpBackend.flush();
     $rootScope.$apply();
   });
+
+  it('should be able to change password', function() {
+    djangoAuth.changePassword('abcd', 'abcd', '1234');
+    $httpBackend.expectPOST(apiURL+'/rest-auth/password/change/', {
+      old_password: '1234',
+      new_password1: 'abcd',
+      new_password2: 'abcd'
+    }).respond(200, { });
+    $httpBackend.flush();
+    $rootScope.$apply();
+  });
+
+  it('should be able to logout', function() {
+    djangoAuth.logout();
+    $httpBackend.expectPOST(apiURL+'/rest-auth/logout/', {})
+      .respond(200, {});
+      $httpBackend.flush();
+      $rootScope.$apply();
+  });
+
 });
