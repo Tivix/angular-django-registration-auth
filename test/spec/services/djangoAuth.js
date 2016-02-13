@@ -28,21 +28,21 @@ describe('djangoAuth service', function () {
     expect($httpBackend).not.toBeNull();
 
     $httpBackend.whenGET('//127.0.0.1:8000/rest-auth/user/')
-      .respond(200, {
-        'id': 1,
-        'email': 'test@mail.com',
-        'phone': '123456',
-        'first_name': 'Test',
-        'last_name': 'Anyway',
-        'created_at': '2015-12-28T03:54:18.176451Z',
-        'updated_at': '2015-12-28T03:54:18.176451Z',
-        'role': 'USER'
-      });
+    .respond(200, {
+      'id': 1,
+      'email': 'test@mail.com',
+      'phone': '123456',
+      'first_name': 'Test',
+      'last_name': 'Anyway',
+      'created_at': '2015-12-28T03:54:18.176451Z',
+      'updated_at': '2015-12-28T03:54:18.176451Z',
+      'role': 'USER'
+    });
 
-      $httpBackend.whenPOST('//127.0.0.1:8000/rest-auth/login/', {username: 'test@mail.com', password: 'testpwd'})
-        .respond(200, {
-          'key': 'TOK123456'
-        });
+    $httpBackend.whenPOST('//127.0.0.1:8000/rest-auth/login/', {username: 'test@mail.com', password: 'testpwd'})
+    .respond(200, {
+      'key': 'TOK123456'
+    });
   }));
 
   afterEach(function() {
@@ -88,9 +88,19 @@ describe('djangoAuth service', function () {
   it('should be able to logout', function() {
     djangoAuth.logout();
     $httpBackend.expectPOST(apiURL+'/rest-auth/logout/', {})
-      .respond(200, {});
-      $httpBackend.flush();
-      $rootScope.$apply();
+    .respond(200, {});
+    $httpBackend.flush();
+    $rootScope.$apply();
+    expect(djangoAuth.authenticated).toBeFalsy();
+  });
+
+  it('should be able to request reset password', function() {
+    djangoAuth.resetPassword('test@mail.com');
+    $httpBackend.expectPOST(apiURL+'/rest-auth/password/reset/', {
+      email: 'test@mail.com'
+    }).respond(200, { });
+    $httpBackend.flush();
+    $rootScope.$apply();
   });
 
 });
