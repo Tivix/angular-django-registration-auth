@@ -2,43 +2,52 @@ AngularJS Module for [Django REST Auth](https://github.com/Tivix/django-rest-aut
 ==================================================================================
 
 To setup this module as a boilerplate project...
-------------------------------------------------
+---------------------------------------------------
 
-First, clone the repository.
+##### First, clone the repository:
 `git clone git@github.com:Tivix/angular-django-registration-auth.git`
 
-Change your directory to the cloned project.
+##### Change your directory to the cloned project:
 `cd angular-django-registration-auth`
 
-Then install the project prerequisites.
+##### Then, install the project prerequisites:
 `npm install; bower install;`
 
-In app/scripts/services/djangoAuth.js, customize API_URL and use_session to meet your project's requirements.
+##### Customize API_URL and use_session to meet your project's requirements:
+Go to `app/scripts/services/djangoAuth.js`
+
+###### If using django-rest-auth demo, check out the docs for a list of endpoints: 
+http://django-rest-auth.readthedocs.org/en/latest/api_endpoints.html
+
+##### Then, serve the Angular Django Registration Auth Demo:
+`grunt serve`
 
 To integrate this module into an existing project...
-----------------------------------------------------
+-------------------------------------------------------
 
-First, clone the repository.
+##### First, clone the repository:
 `git clone git@github.com:Tivix/angular-django-registration-auth.git`
 
-The contents of the app/scripts folder can be copied to your own project.  Exclude controllers and app.js if you do not intend to use the default views/routes. (This will provide API access from the djangoAuth module only.)
+The contents of the `app/scripts` folder can be copied to your own project.  
+  *Exclude controllers and app.js if you do not intend to use the default views/routes. (This will provide API access from the djangoAuth module only.)*
 
-Please note: you will need to include dependencies from bower.json to support the default views/controllers.  They require bootstrap and its dependencies to function correctly.
+##### Inject the angularDjangoRegistrationAuthApp into your own module.
 
-If you intend to use the default views/routes, please also copy the contents of app/views to your own views folder.
+##### Inject the djangoAuth service into any controllers in which you need programmatic access to Django REST Auth.
 
-Inject the angularDjangoRegistrationAuthApp into your own module.
+##### Customize API_URL and use_session to meet your project's requirements:
+Go to `app/scripts/services/djangoAuth.js`
+  *Alternatively, you can change these settings from a controller by changing the djangoAuth.API_URL and djangoAuth.use_session variables.*
 
-Inject the djangoAuth service into any controllers which you need programmatic access to Django REST Auth.
+###### Please note: 
+  you will need to include dependencies from bower.json to support the default views/controllers.  *They require bootstrap and its dependencies to function correctly.*
+  If you intend to use the default views/routes, copy the contents of app/views to your own views folder.
+  
+Todo: We encourage contributions for these aims...
+-----------------------------------------------------
 
-In app/scripts/services/djangoAuth.js, customize API_URL and use_session to meet your project's requirements.
-Alternatively, you can change these settings from a controller by changing the djangoAuth.API_URL and djangoAuth.use_session variables.
+- [ ] Add support for JWT (JSON web tokens)
 
-Todo
-----
+- [ ] Better support for Bower and Grunt
 
-Add support for JWT (JSON web tokens)
-
-Better support for Bower and Grunt
-
-Pick a better name for the module :\
+- [ ] Pick a better name for the module?
