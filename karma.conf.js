@@ -19,8 +19,9 @@ module.exports = function(config) {
       'app/bower_components/angular-route/angular-route.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      // 'test/mock/**/*.js',
+      // 'test/spec/**/*.js'
+      'test/spec/services/djangoAuth.js'
     ],
 
     // list of files / patterns to exclude
@@ -35,7 +36,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // Start these browsers, currently available:
